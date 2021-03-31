@@ -1,9 +1,7 @@
-package com.lwl.booking.pojo.req;
+package com.lwl.booking.pojo.vo;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -13,29 +11,42 @@ import java.util.Date;
  * @description
  */
 @Data
-public class AddSingleFlowReq {
+public class FlowVO {
     /**
-     * 后端自动注入
+     * 自增id
+     */
+    private Long id;
+
+    /**
+     * 属于哪个用户id
      */
     private Long userId;
 
-    @NotNull(message = "amount is null")
+    /**
+     * 数额
+     */
     private BigDecimal amount;
-    @NotNull(message = "categoryId is null")
+
+    /**
+     * 分类
+     */
     private Integer categoryId;
-    @NotBlank(message = "categoryName is null")
+
+    /**
+     * 分类名称
+     */
     private String categoryName;
+
     /**
      * 分类图片url
      */
-    @NotBlank(message = "categoryIconUrl is null")
     private String categoryIconUrl;
 
     /**
-     * 支出时间
+     * 创建时间
      */
-    @NotNull(message = "flowTime is null")
     private Date flowTime;
+
     /**
      * 该笔支出的描述
      */

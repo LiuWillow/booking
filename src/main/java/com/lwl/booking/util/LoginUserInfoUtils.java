@@ -3,6 +3,7 @@ package com.lwl.booking.util;
 import com.lwl.booking.pojo.dto.UserInfoDTO;
 import org.springframework.core.NamedThreadLocal;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -20,6 +21,11 @@ public class LoginUserInfoUtils {
     }
     public static UserInfoDTO getCurrentUser() {
         return Optional.ofNullable(loginUserInfo.get()).orElse(null);
+    }
+
+    public static Long getUserId() {
+        UserInfoDTO currentUser = getCurrentUser();
+        return Objects.isNull(currentUser) ? null : currentUser.getId();
     }
 
     public static void clear() {

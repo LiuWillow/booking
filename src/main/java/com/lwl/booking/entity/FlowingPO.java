@@ -33,6 +33,11 @@ public class FlowingPO implements Serializable {
     private Long id;
 
     /**
+     * 属于哪个用户id
+     */
+    private Long userId;
+
+    /**
      * 数额
      */
     private BigDecimal amount;
@@ -55,7 +60,7 @@ public class FlowingPO implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private Date flowTime;
 
     /**
      * 更新时间

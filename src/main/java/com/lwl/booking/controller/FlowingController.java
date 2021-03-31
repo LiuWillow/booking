@@ -1,14 +1,18 @@
 package com.lwl.booking.controller;
 
 
+import com.lwl.booking.pojo.req.AddSingleFlowReq;
+import com.lwl.booking.pojo.req.CountByTimeReq;
+import com.lwl.booking.pojo.vo.FlowVO;
+import com.lwl.booking.service.FlowingService;
+import com.lwl.booking.util.LoginUserInfoUtils;
 import com.lwl.common.context.BaseResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
-
+import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -21,21 +25,29 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping("/flowing")
 public class FlowingController {
+    @Resource
+    private FlowingService flowingService;
+
     @PostMapping("/single")
-    public BaseResponse<Void> addSingleFlow() {
-        //TODO 记录一笔支出
+    public BaseResponse<Void> addSingleFlow(@RequestBody @Validated AddSingleFlowReq flowReq) {
+        //记录一笔支出
+        Long loginUserId = LoginUserInfoUtils.getUserId();
+        flowReq.setUserId(loginUserId);
+        flowingService.addSingleFlow(flowReq);
         return BaseResponse.success();
     }
 
     @GetMapping("/count-by-time")
-    public BaseResponse<BigDecimal> countByTime() {
-        //TODO 获取一段时间内的总支出
-        return BaseResponse.success();
+    public BaseResponse<BigDecimal> countByTime(CountByTimeReq countByTimeReq) {
+        countByTimeReq.setUserId(LoginUserInfoUtils.getUserId());
+        BigDecimal amount = flowingService.countByTime(countByTimeReq);
+        return BaseResponse.success(amount);
     }
 
     @GetMapping("/list-all")
-    public BaseResponse<?> listAll() {
-        //TODO 获取所有的支出，让前端缓存到本地
-        return BaseResponse.success();
+    public BaseResponse<List<FlowVO>> listAll() {
+        //获取所有的支出，让前端缓存到本地
+        List<FlowVO> list = flowingService.listAll(LoginUserInfoUtils.getUserId());
+        return BaseResponse.success(list);
     }
 }
